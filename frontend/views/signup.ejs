@@ -1,0 +1,37 @@
+<%- include('boilerplate') %>
+
+<div class="login w-full bg-slate-100 flex justify-center items-center h-screen flex-col">
+
+    <h1 class="font-medium text-2xl my-5">Sign in to your account</h1>
+    <div class="wrapper bg-white p-8 rounded-lg shadow-md border border-inherit">
+      <form action="/signup" method="POST">
+        <div class="input mt-4">
+            <label for="">Name</label>
+            <input type="text" name="name">
+        </div>
+
+        <div class="input mt-4">
+            <label for="">Mobile Number</label>
+            <input type="number" name="number">
+        </div>
+
+
+        <div class="input mt-4">
+          <label for="">Email address</label>
+          <input type="text" name="email">
+        </div>
+        
+        <div class="input mt-4">
+          <label for="">Password</label>
+          <input type="password" name="password">
+        </div>
+
+        <button class="my-4 bg-sky-500/100 w-full text-white p-1 rounded-md">Sign Up</button>
+
+        <div class="text-center">Already have an account ? <a class="font-medium signup-opt" href="/login">Log In</a> </div>
+      </form>
+    </div>
+  </div>
+
+ </body> 
+</html>

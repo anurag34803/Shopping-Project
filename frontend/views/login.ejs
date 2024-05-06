@@ -1,0 +1,33 @@
+<%- include('boilerplate') %>
+
+<div class="login w-full bg-slate-100 flex justify-center items-center h-screen flex-col">
+
+    <h1 class="font-medium text-2xl my-5">Sign in to your account</h1>
+    <div class="wrapper bg-white p-8 rounded-lg shadow-md border border-inherit">
+      <form action="/login" method="POST">
+        <div class="input">
+          <label for="">Email address</label>
+          <input type="text" name="email">
+        </div>
+        
+        <div class="input mt-4">
+          <label for="">Password</label>
+          <input type="password" name="password">
+        </div>
+        <div class="flex justify-between my-4 text-base login-forget-opt">
+          <div class="checkbox flex">
+            <input type="checkbox" id="check" class="p-2">
+            <label for="check" class="px-1">Remember me</label>
+          </div>
+          <a href="" class="forget font-medium">Forgot Password</a>
+        </div>
+
+        <button class="bg-sky-500/100 w-full text-white p-1 rounded-md">Sign in</button>
+
+        <div class="text-center mt-3">Dont't have an account ? <a class="font-medium signup-opt" href="/signup">Signup</a> </div>
+      </form>
+    </div>
+  </div>
+
+ </body> 
+</html>

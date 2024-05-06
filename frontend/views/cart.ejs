@@ -1,0 +1,142 @@
+<%- include('boilerplate') %>
+
+
+<div class="w-full bg-white flex justify-between px-10 items-center py-5  border-b border-inherit ">
+    <div class="logo text-2xl font-bold"><a href="/">Armaani</a></div>
+
+    <div class="hidden md:flex items-center">
+       <p class="active mx-2">Bag</p>
+       <p>--------</p>
+       <p class="mx-2">Address</p>
+       <p>--------</p>
+       <p class="mx-2">Payment</p>
+    </div>
+
+    <div class="oth-opt flex items-center">
+        <i class="fa-solid fa-shield text-4xl text-green-600"></i>
+        <p class="font-semibold ml-2">100% Secure</p>
+    </div>
+</div>
+ 
+<div class="bg-slate-100 px-4 sm:px-10 flex justify-center w-full h-full flex-wrap-reverse lg:flex-nowrap">
+    <div class="bg-white rounded-md p-4 py-68 my-4 w-full  border border-gray-200 shadow-md">
+        <h1 class="text-3xl font-semibold">Shopping Cart</h1>
+        <% for(let item of products) { %>
+            <div id="<%=item.id %>" class="product-info w-full my-3 flex justify-between py-8 border-b border-t border-gray-200 ">
+                <div class="left flex w-full">
+                    <div onclick="getProductInfo('<%=item.id %>')" class="cursor-pointer flex justify-center items-center bg-[#fafafa] min-w-48 max-w-48 rounded-md">
+                        <img class="h-full w-full" src="jacket.png" alt="">
+                    </div>
+    
+                    <div class="px-10 min-w-44">
+                        <div>
+                            <h2 class="text-lg font-semibold"><%=item.productname%></h2>
+                            <div class="flex items-center">
+                                <p class="text-gray-600">Black</p>
+                                <div class="vl bg-gray-400"></div>
+                                <span class=" text-gray-600"><%=item.size%></span>
+                            </div>
+    
+                            <div class="price text-lg my-2">
+                                <span class="curr-price font-semibold">&#x20B9 <%=item.price%></span>
+                                <!-- <span class="mrp">&#x20B9 200</span> -->
+                            </div>
+
+                            <div class="select mobile flex sm:hidden w-20 px-4 my-4 h-10 outline-none border border-gray-300 rounded-md justify-center items-center"><%= item.qty  %></div>
+                            
+                        </div>
+                    
+        
+                        <div class="mt-28">
+                            <div class="flex items-center">
+                                <i class="material-symbols-outlined text-green-400">check</i>
+                                <p class="ml-2"> In stock</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+    
+                <div class="right flex sm:justify-between justify-end w-full">
+                    <div class="select hidden sm:flex w-20 h-10 px-4 outline-none border border-gray-300 rounded-md justify-center items-center"><%= item.qty  %></div>
+                    
+    
+                    <div class="remove ml-4" onclick="removefromCart('<%= item.id %>')">
+                        <button class="text-gray-600 flex items-center">
+                           <i class="fas fa-times mr-1"></i>
+                        </button>                                     
+                    </div>
+                </div>
+            
+    
+            </div> 
+        <% } %>
+
+        <% if (products.length == 0) { %>
+           <div class="w-full h-full flex justify-center items-center">
+            <a href="/" class="mt-2 bg-blue-500 text-white py-2 px-4 rounded-md">Shop Now</a>
+           </div>
+        <% } %>
+        <!-- Sample Cart Item -->
+
+            <!-- <div class="right flex sm:justify-between justify-end w-full">
+                <select class="hidden sm:flex w-20 h-10 px-4 outline-none border border-gray-300 rounded-md text-center">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+
+                <div class="remove ml-4">
+                    <button class="text-gray-600 flex items-center">
+                       <i class="fas fa-times mr-1"></i>
+                    </button>                                     
+                </div>
+            </div> -->
+    </div>
+
+    
+
+    
+
+    <!-- Cart Summary -->
+    <div class="lg:ml-8 my-4 shadow-md  bg-white rounded-md p-4 w-full lg:max-w-96 h-72 border border-gray-200">
+        <h2 class="text-xl font-semibold mb-2">Order Summary</h2>
+             <div class="text-gray-600 py-2 flex justify-between border-b border-gray-300">
+                <p>Subtotal : </p>
+                <p class="total"></p>
+             </div>
+
+             <div class="text-gray-600 py-2 flex justify-between border-b border-gray-300">
+                <p>Shipping estimate :</p>
+                <p>₹ 0</p>
+             </div>
+
+             <div class="text-gray-600 py-2 flex justify-between border-b border-gray-300">
+                <p>Tax estimate : </p>
+                <p>₹ 0</p>
+             </div>
+
+             <div class="order-total font-semibold py-2 flex justify-between">
+                <p>Order total : </p>
+                <p class="total"></p>
+             </div>
+            
+             <div class="coupons flex items-center w-full">
+                <input class="h-full" placeholder="Enter Coupon" type="number" name="number">
+                <button class="m-2 hover:bg-green-500 hover:text-white px-8 py-2 border border-green-500 text-green-500 rounded-md">Apply</button>
+             </div>
+            <button class="mt-2 w-full bg-green-500 text-white py-2 rounded-md">Checkout</button>
+        </div>
+    </div>
+</div>
+
+<%- include('footer') %>
+
+<script src="checkout.js"></script> 

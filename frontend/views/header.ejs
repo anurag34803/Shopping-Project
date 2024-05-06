@@ -1,0 +1,86 @@
+<%- include('boilerplate') %>
+
+<div class="fixed w-full navbar z-50">
+
+        <div class="alert bg-black flex items-center md:justify-between justify-center py-2 px-10 text-white w-full flex-wrap">
+            <span> Get free delivery on orders over 999$ </span>
+            
+            <div class="auth-btns md:flex items-center hidden">
+                <a href="/signup">Create an account</a>
+                <div class="vl bg-white"></div>
+                <a href="/login">Sign In</a>
+            </div>
+        </div>
+    
+        <nav class=" bg-white flex justify-between px-10 items-center w-full py-5  border-b border-inherit">
+                    <!-- 3-icon button -->
+            <div class="md:hidden flex items-center">
+                <button type="button" class="text-black" onclick="toggleSidebar()">
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                </button>
+            </div>
+            
+            <div class="logo text-2xl font-bold"><a href="/">Armaani</a></div>
+
+            <div class="opt hidden md:flex">
+               <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="#Deals">Today Deals</a></li>
+                <li><a href="#mens-collection">Men</a></li>
+                <li><a href="#women-collection">Women</a></li>
+                <li><a href="">About Us</a></li>
+               </ul>
+            </div>
+
+
+
+            <div class="oth-opt flex">
+                <div class="w-7">
+                    <a href="">
+                        <img class="w-full h-full" src="user.png" alt="">
+                    </a>
+                </div>
+
+                <div class="w-7 ml-8">
+                    <a href="/cart">
+                        <img class="w-full h-full" src="cart.png" alt="">
+                    </a>
+                </div>
+            </div>
+        </nav>
+</div>  
+
+<!-- Sidebar -->
+<div class="fixed inset-0 bg-gray-800 md:hidden bg-opacity-75 z-50 hidden" id="sidebar">
+    <div class="flex flex-col h-full bg-white">
+        <div class="flex justify-between p-4 bg-white">
+            <div class="logo text-2xl font-bold"><a href="">Armaani</a></div>
+            <!-- Close button -->
+            <button type="button" class="text-black" onclick="closeSidebar()">
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="mob-nav flex flex-col items-start p-3 bg-white text-black">
+            <a href="">Home</a><br>
+            <a href="">Today Deals</a><br>
+            <a href="">Men</a><br>
+            <a href="">Women</a><br>
+            <a href="">About Us</a><br>
+     
+            <div class='btns w-full md:flex'>
+                <a href="/login" class='w-full md:mx-2'>
+                   <div class="login border border-black font-semibold text-md rounded-md py-1 my-2 flex justify-center items-center">Log In</div>
+                 </a>
+          
+                 <a href="/signup" class='w-full'>
+                    <div class="signup flex justify-center items-center text-md bg-sky-500/100 py-1 my-2 rounded-md text-white">Sign up</div>
+                 </a>
+            </div> 
+         </div>
+    </div>
+</div>

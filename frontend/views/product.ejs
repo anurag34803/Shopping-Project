@@ -1,0 +1,70 @@
+<%- include('header') %>
+  
+    <div class="pt-36 product flex py-8 px-8 bg-white flex-wrap">
+
+        <div class="image-area flex justify-center items-center bg-[#fafafa] md:w-6/12 xl:w-4/12 w-full rounded-md">
+            <img class="w-9/12 h-8/12" src="jacket.png" alt="">
+        </div> 
+    
+        <div class="info ml-8 w-full md:w-5/12">
+            <h2 class="title font-bold text-2xl md:mt-0 mt-4"><%=product.productname%></h2>
+            <div class="price text-xl my-2 flex justify-between">
+                <span class="curr-price font-semibold">&#x20B9 <%=product.price%></span>
+                
+                <div class="star-rating flex">
+                    <% for(let i=0;i<product.rating;i++) { %>
+                        <!-- Filled stars -->
+                        <span class="star">★</span>
+                        <% } %>
+                        <!-- Non-filled stars -->
+                        <% for(let i=0;i< (5 - product.rating);i++) { %>
+                           <span class="star-empty">★</span>
+                        <% } %>
+    
+                    <div class="tot-reviews ml-4 text-md">4.7 (118)</div>
+                </div>
+            </div>
+            
+            <div class="dexription py-4 my-4 border-b border-t border-gray-200">
+               <p><%=product.desc%></p>
+            </div>
+            
+            <div class="size-arrange">
+                <div class="mb-2 text-lg">Size : <span class="size font-semibold"><%= size %></span> </div>
+    
+                <div class="flex flex-wrap size-options">
+                    <div class="size-option <%= size === 'S' ? 'active' : '' %>">S</div>
+                    <div class="size-option <%= size === 'M' ? 'active' : '' %>">M</div>
+                    <div class="size-option <%= size === 'L' ? 'active' : '' %>">L</div>
+                    <div class="size-option not-available relative">XL</div>
+                    <div class="size-option <%= size === 'XXL' ? 'active' : '' %>">XXL</div>
+                </div>
+            </div>
+    
+            <div class="qty mt-6">
+                <span>Quantity : </span>
+                <select id="quantitySelect" class="w-20 h-8 outline-none border ml-2 border-gray-300 rounded-md text-center">
+                    <% for (let i = 1; i <= 10; i++) { %>
+                        <option value="<%= i %>" <%= qty == i ? 'selected' : '' %>><%= i %></option>
+                    <% } %>
+                 </select>
+            </div>
+            
+            <button onclick="addtoCart('<%=product.id%>')" class="my-6 mb-0 w-full bg-blue-500 text-white px-6 py-2 rounded-md">Add to Cart</button>
+            <div class="mt-4">
+                <div class="flex items-center">
+                    <i class="material-symbols-outlined text-green-400">check</i>
+                    <p class="ml-2"> In stock </p>
+                </div>
+    
+                <div class="flex items-center">
+                    <i class="material-symbols-outlined text-red-500">close</i>
+                    <p class="ml-2"> No return </p>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+
+<%- include('footer') %>
