@@ -6,47 +6,55 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const ejsmate = require('ejs-mate');
-// const session = require('express-session');
+const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
 
 
-// const passport = require('passport');
-// const LocalStrategy = require('passport-local');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 
-// // const User = require('./Models/User');
+const User = require('./Models/User');
 const product = require('./Models/product');
 const deals = require('./Models/deals');
 
-// app.use(session({
-//     secret: 'keyboardcat',
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie:{
-//         httpOnly:true,
-//         maxAge: 7 * 24 * 60 * 60 * 1000 * 1
-//     }
-//   }))
+app.use(session({
+    secret: 'login',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly:true,
+        maxAge: 7 * 24 * 60 * 60 * 1000 * 1
+    }
+}))
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
-// passport.use(new LocalStrategy({
-//     usernameField: 'email',
-//     passwordField: 'password'
-// }, (email, password, done) => {
-//     User.authenticate()(email, password, (err, user) => {
-//         if (err) {
-//             return done(err);
-//         }
-//         if (!user) {
-//             return done(null, false, { message: 'Incorrect email or password' });
-//         }
-//         return done(null, user);
-//     });
-// }));
+app.use(flash());
 
-// // passport.serializeUser(User.serializeUser());
-// // passport.deserializeUser(User.deserializeUser());
+app.get('/flash', function(req, res){
+    // Set a flash message by passing the key, followed by the value, to req.flash().
+    req.flash('invalid', 'Invalid Username & Password')
+});
+
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+}, (email, password, done) => {
+    User.authenticate()(email, password, (err, user) => {
+        if (err) {
+            return done(err);
+        }
+        if (!user) {
+            return done(null, false, { message: 'Incorrect email or password' });
+        }
+        return done(null, user);
+    });
+}));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use(express.static(path.join(__dirname, '../frontend/static')));
 app.use(express.static(path.join(__dirname, '../frontend/images')));
@@ -62,18 +70,18 @@ app.get('/', async (req,res) => {
   let men = await product.find({category:"Men"}).limit(8); 
   let women = await product.find({category:"Women"}).limit(8);
   
-//   let todaydeals = await deals.find({}, { productid: 1, _id: 0 });
-//   console.log(todaydeals);
+  let todaydeals = await deals.find({}, 'productid');
+  //console.log(todaydeals);
 
-//   // Extract productid values and convert them to ObjectId
-//   let productIds = todaydeals.map(deal => deal.productid).map(id => new ObjectId(id));
-//   console.log(productIds);
-//   // Use $in operator to find products with matching productids
-//   let dealsproduct = await product.find({ productid: { $in: productIds } });
+  // Extract productid values and convert them to ObjectId
+  let productIds = todaydeals.map(deal => deal.productid).map(id => new ObjectId(id));
+  //console.log(productIds);
 
-//   console.log(dealsproduct);
+  // Use $in operator to find products with matching productids
+  let dealsProducts = await product.find({ _id: { $in: productIds } });
+  // console.log(dealsProducts);
 
-   res.render('home',{men:men,women:women});
+   res.render('home',{men:men,women:women,deals:dealsProducts,user:req.user});
 })
 
 
@@ -107,60 +115,70 @@ app.get('/login', (req,res) => {
     res.render('login');
 })
 
-// // app.post('/login', async (req,res) => {
-// //     try {
-// //         let {email,password} = req.body;
+// app.post('/login', async (req,res) => {
+//     try {
+//         let {email,password} = req.body;
 
-// //         let isEmailRegistered = await User.findOne({ email });
-// //         if(!isEmailRegistered) return res.send('Email not registered!');
+//         let isEmailRegistered = await User.findOne({ email });
+//         if(!isEmailRegistered) return res.send('Email not registered!');
     
         
-// //         res.redirect('/');
-// //     }
+//         res.redirect('/');
+//     }
 
-// //    catch (e) {
-// //        res.send('Something went wrong');
-// //    }
-// // })
+//    catch (e) {
+//        res.send('Something went wrong');
+//    }
+// })
 
-// app.post('/login', 
-//          passport.authenticate('local',
-//             { failureRedirect: '/login'}), 
+app.post('/login', 
+         passport.authenticate('local',
+            { failureRedirect: '/login'}), 
   
-//   (req, res) => {
-//   console.log(req.user);
-//   res.redirect('/');
-// });
+  (req, res) => {
+  //console.log(req.user);
+  res.redirect('/');
+});
 
 app.get('/signup', (req,res) => {
     res.render('signup');
 })
 
-// app.post('/signup', async (req,res) => {
+app.post('/signup', async (req,res) => {
+    try {
+        let {name,email,number,password} = req.body;
 
-//     try {
-//         let {name,email,number,password} = req.body;
+        let isEmailRegistered = await User.findOne({ email });
+        let isNumberRegistered = await User.findOne({ number });
 
-//         let isEmailRegistered = await User.findOne({ email });
-//         let isNumberRegistered = await User.findOne({ number });
-
-//         if(isEmailRegistered) return res.send('Email Already Registered!');
-//         if(isNumberRegistered) return res.send('Mobile Number Already Registered!');
+        if(isEmailRegistered) return res.send('Email Already Registered!');
+        if(isNumberRegistered) return res.send('Mobile Number Already Registered!');
     
-//         const newUser = new User({name,email,number});
-//         await User.register(newUser,password);
-//         res.redirect('/');
-//     }
+        const newUser = new User({name,email,number});
+        await User.register(newUser,password);
+        res.redirect('/login');
+    }
 
-//     catch (e) {
-//        res.send('Something went wrong');
-//     }
+    catch (e) {
+       res.send('Something went wrong');
+    }
+})
+
+app.get('/logout', (req,res) => {
+    req.logout(function (err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
+})
+
+// app.get('/viewall/:category', async (req,res) => {
+//     // let category = req.params.category;
+//     // console.log(category);
+//      let products = await product.find({category:category}); 
+//      res.render('viewall',{products});
 // })
 
-app.get('/viewall', async (req,res) => {
-    let products = await product.find({category:"Men"}); 
-     res.render('viewall',{products});
-  })
+
 app.get('/:productid', async (req, res) => {
     let id = req.params.productid;
     const Item = JSON.parse(req.cookies.storedData);
@@ -178,7 +196,7 @@ app.get('/:productid', async (req, res) => {
     }
     
     const products = await product.findById(id);
-    res.render('product',{product : products, size:size, qty:qty});
+    res.render('product',{product : products, size:size, qty:qty,user:req.user});
 })
 
 app.listen(9080,() => {
